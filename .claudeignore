@@ -1,0 +1,45 @@
+# Build outputs
+node_modules/
+dist/
+build/
+out/
+target/
+.next/
+.nuxt/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# VCS and tooling
+.git/
+.idea/
+.vscode/
+
+# Lockfiles and logs (rarely needed by an agent)
+*.log
+*.tmp
+# Keep uv.lock readable since it's small and committed
+# but skip yarn/npm lockfiles if they appear
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Coverage and test artifacts
+coverage/
+.coverage
+.nyc_output/
+.pytest_cache/
+.ruff_cache/
+
+# Local env
+.env
+.env.*
+
+# Orchestrator's scratch/results dir (fan-out scripts, exit codes, JSON results)
+.orchestrate/
+
+# AgentSurface generated output (these are products of running the tool;
+# workers should not load them to make decisions)
+data/reports/
+site/
