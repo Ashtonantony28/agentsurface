@@ -1,0 +1,56 @@
+{% extends "base.html.j2" %}
+
+{% block title %}AgentSurface Scoring Framework{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ── Prose styles for rendered Markdown ─────────────────────── */
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose h1 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+  .prose h2 { font-size: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+  .prose h3 { font-size: 1.05rem; }
+  .prose p  { margin-bottom: 0.75rem; }
+  .prose ul, .prose ol { padding-left: 1.75rem; margin-bottom: 0.75rem; }
+  .prose li { margin-bottom: 0.25rem; }
+  .prose table { margin-bottom: 1rem; }
+  .prose blockquote {
+    border-left: 3px solid var(--border);
+    padding-left: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .prose code {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.1em 0.35em;
+    font-size: 0.85em;
+  }
+  .prose pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+  }
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+  .prose a { color: var(--link); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="panel" style="font-size:0.875rem;">
+  This document is licensed <strong>CC-BY-4.0</strong>. Cite it freely.
+  Framework source: <a href="https://github.com/your-org/agentsurface/blob/main/docs/framework.md">docs/framework.md</a>
+</div>
+
+<article class="prose">
+  {{ framework_html | safe }}
+</article>
+{% endblock %}

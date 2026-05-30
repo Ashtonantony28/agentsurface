@@ -1,0 +1,10 @@
+{
+  "info": {
+    "name": "testapi",
+    "version": "1.0.0",
+    "classifiers": [
+      "Programming Language :: Python :: 3",
+      "Typing :: Typed"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "testapi",
+  "dist-tags": {"latest": "1.0.0"},
+  "versions": {
+    "1.0.0": {
+      "name": "testapi",
+      "version": "1.0.0",
+      "types": "./index.d.ts"
+    }
+  }
+}

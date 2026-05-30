@@ -1,0 +1,7 @@
+{
+  "type": "invalid_request_error",
+  "code": "resource_not_found",
+  "message": "Not found.",
+  "doc_url": "https://docs.testapi.example.com/errors/resource_not_found",
+  "param": "id"
+}

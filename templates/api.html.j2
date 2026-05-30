@@ -1,0 +1,335 @@
+{% extends "base.html.j2" %}
+
+{% set grade_class = "grade-" ~ report.overall_grade | replace("+", "plus") | replace("-", "minus") %}
+
+{% block title %}{{ report.name }} — AgentSurface{% endblock %}
+
+{% block og_title %}{{ report.name }} — AgentSurface Agent Readiness{% endblock %}
+{% block og_description %}{{ report.name }} scores {{ "%.1f" | format(report.overall_score) }}/100 (grade {{ report.overall_grade }}) on the AgentSurface AI Agent Readiness Leaderboard.{% endblock %}
+
+{% block content %}
+<!-- ── Header ─────────────────────────────────────────────────── -->
+<div style="display:flex; align-items:flex-start; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+  <div>
+    <h1 style="margin-bottom:0.25rem;">{{ report.name }}</h1>
+    <p class="text-muted">{{ report.category }}{% if report.homepage %} &mdash; <a href="{{ report.homepage }}">{{ report.homepage }}</a>{% endif %}</p>
+  </div>
+  <div style="margin-left:auto; text-align:right;">
+    <span class="grade {{ grade_class }}" style="font-size:2.5rem; padding:0.2em 0.6em;">{{ report.overall_grade }}</span>
+    <div class="text-muted mt-1">overall score: <strong>{{ "%.1f" | format(report.overall_score) }}</strong> / 100</div>
+  </div>
+</div>
+
+<!-- ── Dimension summary table ────────────────────────────────── -->
+<h2>Dimension scores</h2>
+<div style="overflow-x: auto;">
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Score bar</th>
+      <th class="text-right">Score</th>
+      <th>Grade</th>
+      <th class="text-right">Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for dim in report.dimensions %}
+    {% set dgrade_class = "grade-" ~ dim.grade | replace("+", "plus") | replace("-", "minus") %}
+    <tr>
+      <td>{{ dim.dimension_name }}</td>
+      <td style="min-width:120px;">
+        <div class="score-bar"><div class="score-fill" style="width: {{ dim.score | round(1) }}%;"></div></div>
+      </td>
+      <td class="text-right">{{ "%.1f" | format(dim.score) }}</td>
+      <td><span class="grade {{ dgrade_class }}">{{ dim.grade }}</span></td>
+      <td class="text-right">{{ (dim.weight * 100) | int }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<!-- ── Per-dimension signal breakdowns ───────────────────────── -->
+<h2 class="mt-2">Signal breakdown</h2>
+{% for dim in report.dimensions %}
+<details class="panel" style="padding:0;">
+  <summary style="padding:0.75rem 1rem; font-weight:600;">
+    {{ dim.dimension_name }}
+    &nbsp;
+    {% set dgrade_class2 = "grade-" ~ dim.grade | replace("+", "plus") | replace("-", "minus") %}
+    <span class="grade {{ dgrade_class2 }}">{{ dim.grade }}</span>
+    <span class="text-muted" style="font-weight:400; margin-left:0.5rem;">{{ "%.1f" | format(dim.score) }} / 100</span>
+  </summary>
+  <div style="padding:0.75rem 1rem;">
+    <div style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Signal</th>
+          <th>Status</th>
+          <th class="text-right">Weight</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sig in dim.signals %}
+        <tr>
+          <td>{{ sig.name }}</td>
+          <td>
+            {% if sig.status == "pass" %}
+              <span class="sig-pass">&#10003;</span>
+            {% elif sig.status == "fail" %}
+              <span class="sig-fail">&#10007;</span>
+            {% else %}
+              <span class="sig-partial">&#126;</span>
+            {% endif %}
+            <span class="text-muted" style="font-size:0.8em;">{{ sig.status }}</span>
+          </td>
+          <td class="text-right">{{ (sig.weight * 100) | int }}%</td>
+          <td class="text-muted">{{ sig.notes | default("") }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</details>
+{% endfor %}
+
+<!-- ── What to fix first ───────────────────────────────────────── -->
+{% set fix_candidates = [] %}
+{% for dim in report.dimensions %}
+  {% for sig in dim.signals %}
+    {% if sig.status == "fail" %}
+      {% set _ = fix_candidates.append({"dim": dim.dimension_name, "sig": sig, "sort_key": 0}) %}
+    {% elif sig.status == "partial" %}
+      {% set _ = fix_candidates.append({"dim": dim.dimension_name, "sig": sig, "sort_key": 1}) %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{# Suggestion map keyed on signal id fragments #}
+{% if fix_candidates %}
+<h2 class="mt-2">What to fix first</h2>
+<div class="panel">
+  <p class="text-muted mb-1">Top failing signals — fixing these will have the biggest impact on your grade.</p>
+  <div style="overflow-x: auto;">
+  <table>
+    <thead>
+      <tr>
+        <th>Signal</th>
+        <th>Dimension</th>
+        <th>Status</th>
+        <th>Evidence / notes</th>
+        <th>Suggestion</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in fix_candidates[:3] %}
+      {% set sig_id = item.sig.id | default(item.sig.name) | lower | replace(" ", "_") %}
+      <tr>
+        <td>{{ item.sig.name }}</td>
+        <td class="text-muted">{{ item.dim }}</td>
+        <td>
+          {% if item.sig.status == "fail" %}
+            <span class="sig-fail">&#10007; fail</span>
+          {% else %}
+            <span class="sig-partial">&#126; partial</span>
+          {% endif %}
+        </td>
+        <td class="text-muted">
+          {% set notes = item.sig.notes | default("") %}
+          {% if "http" in notes %}
+            {# Extract first URL from notes and linkify it #}
+            {% set parts = notes.split(" ") %}
+            {% for part in parts %}
+              {% if part.startswith("http") %}
+                <a href="{{ part }}" target="_blank" rel="noopener">{{ part }}</a>
+              {% else %}
+                {{ part }}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {{ notes }}
+          {% endif %}
+        </td>
+        <td style="font-size:0.8rem;">
+          {% if "llms_txt" in sig_id %}
+            Publish /llms.txt at your docs domain root
+          {% elif "llms_full" in sig_id %}
+            Publish /llms-full.txt with extended machine-readable docs
+          {% elif "spec_discoverable" in sig_id or "openapi" in sig_id %}
+            Add a publicly accessible OpenAPI 3.x spec (e.g. /openapi.json)
+          {% elif "valid_oas" in sig_id %}
+            Ensure your OpenAPI spec validates against the OAS 3.x schema
+          {% elif "has_servers" in sig_id %}
+            Add a servers[] array to your OpenAPI spec with your base URL
+          {% elif "auth_in_security" in sig_id or "security_scheme" in sig_id %}
+            Define securitySchemes in your OpenAPI spec
+          {% elif "error_response" in sig_id %}
+            Add error response schemas (4xx/5xx) to every OpenAPI operation
+          {% elif "example_coverage" in sig_id %}
+            Add request/response examples to your OpenAPI operations
+          {% elif "json_response" in sig_id %}
+            Return JSON with a machine-readable error body on 4xx/5xx
+          {% elif "machine_code" in sig_id %}
+            Include a stable error code field (e.g. "code" or "error") in error responses
+          {% elif "docs_url" in sig_id %}
+            Add a docs_url field to error responses pointing to remediation docs
+          {% elif "names_offending" in sig_id %}
+            Name the offending field in validation error responses
+          {% elif "correct_status" in sig_id %}
+            Return semantically correct HTTP status codes (401 vs 403, 422 vs 400)
+          {% elif "programmatic_key" in sig_id %}
+            Document how to create API keys programmatically (dashboard or API)
+          {% elif "scopes_enumerable" in sig_id %}
+            List all OAuth scopes and their permissions in your docs
+          {% elif "agents_md" in sig_id %}
+            Add an AGENTS.md file to your GitHub repo root
+          {% elif "mcp_server" in sig_id %}
+            Publish an MCP server URL in your docs or well-known paths
+          {% elif "ai_plugin" in sig_id %}
+            Add a /.well-known/ai-plugin.json manifest to your API domain
+          {% elif "robots" in sig_id %}
+            Update robots.txt to include AI crawler policies
+          {% elif "npm_package" in sig_id %}
+            Publish an official npm package for your API
+          {% elif "pypi_package" in sig_id %}
+            Publish an official PyPI package for your API
+          {% elif "readme_install" in sig_id %}
+            Add a one-liner install command in the first 20 lines of your README
+          {% elif "typed" in sig_id %}
+            Add TypeScript types or .pyi stubs to your SDK packages
+          {% elif "changelog" in sig_id %}
+            Publish a changelog file or Atom/RSS feed for your API
+          {% elif "sitemap" in sig_id %}
+            Add a sitemap.xml to your docs domain
+          {% elif "html_content" in sig_id %}
+            Reduce JavaScript gating so doc pages render content without JS
+          {% elif "no_js_gates" in sig_id %}
+            Ensure docs are accessible without JavaScript execution
+          {% elif "async_client" in sig_id %}
+            Provide an async client variant in your SDK
+          {% elif "sdk_version" in sig_id %}
+            Keep SDK version numbers in sync with your API changelog
+          {% elif "request_id" in sig_id %}
+            Return a unique request-id header in every API response
+          {% elif "4xx_5xx" in sig_id %}
+            Ensure client errors (4xx) and server errors (5xx) are distinguished clearly
+          {% elif "m2m_docs" in sig_id %}
+            Document machine-to-machine (M2M) authentication flows
+          {% elif "webhook_signing" in sig_id %}
+            Document webhook payload signing and how to verify signatures
+          {% elif "llms_txt_disallow" in sig_id %}
+            Add allow/disallow rules for AI tools in your llms.txt file
+          {% elif "changelog_feed" in sig_id %}
+            Publish an Atom or RSS feed for your API changelog
+          {% elif "operation_ids" in sig_id %}
+            Add unique operationId values to every OpenAPI operation
+          {% elif "response_desc" in sig_id %}
+            Add human-readable description fields to every OpenAPI response
+          {% else %}
+            Review the signal documentation in the framework spec
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- ── How to improve ─────────────────────────────────────────── -->
+{% set failing = [] %}
+{% for dim in report.dimensions %}
+  {% for sig in dim.signals %}
+    {% if sig.status in ("fail", "partial") %}
+      {% set _ = failing.append({"dim": dim.dimension_name, "sig": sig}) %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% if failing %}
+<h2 class="mt-2">How to improve</h2>
+<div class="panel">
+  <p class="text-muted mb-1">The following signals are failing or partial. Fixing them will raise your grade.</p>
+  <div style="overflow-x: auto;">
+  <table>
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Signal</th>
+        <th>Status</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in failing %}
+      <tr>
+        <td class="text-muted">{{ item.dim }}</td>
+        <td>{{ item.sig.name }}</td>
+        <td>
+          {% if item.sig.status == "partial" %}
+            <span class="sig-partial">&#126; partial</span>
+          {% else %}
+            <span class="sig-fail">&#10007; fail</span>
+          {% endif %}
+        </td>
+        <td class="text-muted">{{ item.sig.notes | default("") }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- ── Badge embed ────────────────────────────────────────────── -->
+<h2 class="mt-2">Badge</h2>
+<div class="panel">
+  <p class="text-muted mb-1">Embed this badge in your README or docs to show your Agent Readiness grade.</p>
+  <img src="{{ badge_url }}" alt="Agent Readiness: {{ report.overall_grade }}" style="margin-bottom:0.75rem; display:block;">
+
+  <p style="font-size:0.875rem; font-weight:600; margin-bottom:0.25rem;">
+    Markdown:
+    <button class="copy-btn" onclick="(function(btn){var t='![Agent Readiness: {{ report.overall_grade }}](https://agentsurface.dev{{ badge_url }})';navigator.clipboard.writeText(t).then(function(){var old=btn.textContent;btn.textContent='Copied!';setTimeout(function(){btn.textContent=old;},1500);});})(this)">Copy</button>
+  </p>
+  <pre id="badge-md">![Agent Readiness: {{ report.overall_grade }}](https://agentsurface.dev{{ badge_url }})</pre>
+
+  <p style="font-size:0.875rem; font-weight:600; margin-bottom:0.25rem;">
+    HTML:
+    <button class="copy-btn" onclick="(function(btn){var t='&lt;img src=&quot;https://agentsurface.dev{{ badge_url }}&quot; alt=&quot;Agent Readiness: {{ report.overall_grade }}&quot;&gt;';var decoded=t.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'\"');navigator.clipboard.writeText(decoded).then(function(){var old=btn.textContent;btn.textContent='Copied!';setTimeout(function(){btn.textContent=old;},1500);});})(this)">Copy</button>
+  </p>
+  <pre>&lt;img src="https://agentsurface.dev{{ badge_url }}" alt="Agent Readiness: {{ report.overall_grade }}"&gt;</pre>
+</div>
+
+<!-- ── Provenance ─────────────────────────────────────────────── -->
+<h2 class="mt-2">Provenance</h2>
+<details class="panel" style="padding:0;">
+  <summary style="padding:0.75rem 1rem; font-weight:600;">Scan metadata</summary>
+  <div style="padding:0.75rem 1rem;">
+    <table>
+      <tbody>
+        <tr><th style="width:12rem;">Scanned at</th><td>{{ report.provenance.scanned_at }}</td></tr>
+        <tr><th>Scanner version</th><td>{{ report.provenance.scanner_version }}</td></tr>
+        <tr>
+          <th>URLs fetched</th>
+          <td>
+            {% if report.provenance.urls_fetched %}
+            <ul style="list-style:none; padding:0;">
+              {% for url in report.provenance.urls_fetched %}
+              <li><a href="{{ url }}">{{ url }}</a></li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <span class="text-muted">none recorded</span>
+            {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+{% endblock %}

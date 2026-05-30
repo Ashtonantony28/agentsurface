@@ -1,0 +1,8 @@
+user-agent: *
+disallow:
+
+user-agent: gptbot
+disallow: /private/
+
+user-agent: claudebot
+disallow: /private/

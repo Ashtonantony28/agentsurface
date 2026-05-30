@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentsurface"
+version = "0.1.0"
+description = "Open scoring framework for AI-agent usability of developer APIs"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2",
+    "jinja2>=3.1",
+    "pyyaml>=6.0",
+    "click>=8.1",
+    "markdown>=3.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "respx>=0.21",
+    "ruff>=0.4",
+]
+
+[project.scripts]
+agentsurface = "agentsurface.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentsurface"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+src = ["src"]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

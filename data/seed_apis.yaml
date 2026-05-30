@@ -1,0 +1,526 @@
+# AgentSurface seed API list — maintained manually, 40+ entries
+
+# Categories: payments, infrastructure, communications, identity_auth,
+#             data_storage, ai_ml, ecommerce, devtools_observability
+# Sorted by category, then slug within category.
+
+- slug: assemblyai
+  name: AssemblyAI
+  category: ai_ml
+  homepage: https://www.assemblyai.com
+  docs_url: https://www.assemblyai.com/docs
+  openapi_url: null
+  github_org: AssemblyAI
+  npm_package: assemblyai
+  pypi_package: assemblyai
+  mcp_server_url: null
+
+- slug: anthropic
+  name: Anthropic
+  category: ai_ml
+  homepage: https://www.anthropic.com
+  docs_url: https://docs.anthropic.com
+  openapi_url: null
+  github_org: anthropics
+  npm_package: "@anthropic-ai/sdk"
+  pypi_package: anthropic
+  mcp_server_url: null
+
+- slug: cohere
+  name: Cohere
+  category: ai_ml
+  homepage: https://cohere.com
+  docs_url: https://docs.cohere.com
+  openapi_url: null
+  github_org: cohere-ai
+  npm_package: cohere-ai
+  pypi_package: cohere
+  mcp_server_url: null
+
+- slug: deepgram
+  name: Deepgram
+  category: ai_ml
+  homepage: https://deepgram.com
+  docs_url: https://developers.deepgram.com/docs
+  openapi_url: null
+  github_org: deepgram
+  npm_package: "@deepgram/sdk"
+  pypi_package: deepgram-sdk
+  mcp_server_url: null
+
+- slug: eleven-labs
+  name: ElevenLabs
+  category: ai_ml
+  homepage: https://elevenlabs.io
+  docs_url: https://elevenlabs.io/docs
+  openapi_url: null
+  github_org: elevenlabs
+  npm_package: elevenlabs
+  pypi_package: elevenlabs
+  mcp_server_url: null
+
+- slug: hugging-face
+  name: Hugging Face
+  category: ai_ml
+  homepage: https://huggingface.co
+  docs_url: https://huggingface.co/docs
+  openapi_url: null
+  github_org: huggingface
+  npm_package: "@huggingface/inference"
+  pypi_package: huggingface-hub
+  mcp_server_url: null
+
+- slug: mistral
+  name: Mistral AI
+  category: ai_ml
+  homepage: https://mistral.ai
+  docs_url: https://docs.mistral.ai
+  openapi_url: null
+  github_org: mistralai
+  npm_package: "@mistralai/mistralai"
+  pypi_package: mistralai
+  mcp_server_url: null
+
+- slug: openai
+  name: OpenAI
+  category: ai_ml
+  homepage: https://openai.com
+  docs_url: https://platform.openai.com/docs
+  openapi_url: https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml
+  github_org: openai
+  npm_package: openai
+  pypi_package: openai
+  mcp_server_url: null
+  api_base_url: https://api.openai.com
+
+- slug: replicate
+  name: Replicate
+  category: ai_ml
+  homepage: https://replicate.com
+  docs_url: https://replicate.com/docs
+  openapi_url: null
+  github_org: replicate
+  npm_package: replicate
+  pypi_package: replicate
+  mcp_server_url: null
+
+- slug: stability-ai
+  name: Stability AI
+  category: ai_ml
+  homepage: https://stability.ai
+  docs_url: https://platform.stability.ai/docs/api-reference
+  openapi_url: null
+  github_org: Stability-AI
+  npm_package: null
+  pypi_package: stability-sdk
+  mcp_server_url: null
+
+- slug: bigcommerce
+  name: BigCommerce
+  category: ecommerce
+  homepage: https://www.bigcommerce.com
+  docs_url: https://developer.bigcommerce.com/docs
+  openapi_url: null
+  github_org: bigcommerce
+  npm_package: null
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: medusa
+  name: Medusa
+  category: ecommerce
+  homepage: https://medusajs.com
+  docs_url: https://docs.medusajs.com
+  openapi_url: null
+  github_org: medusajs
+  npm_package: "@medusajs/medusa"
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: shopify
+  name: Shopify
+  category: ecommerce
+  homepage: https://www.shopify.com
+  docs_url: https://shopify.dev/docs/api
+  openapi_url: null
+  github_org: Shopify
+  npm_package: "@shopify/shopify-api"
+  pypi_package: ShopifyAPI
+  mcp_server_url: null
+
+- slug: woocommerce
+  name: WooCommerce
+  category: ecommerce
+  homepage: https://woocommerce.com
+  docs_url: https://woocommerce.github.io/woocommerce-rest-api-docs
+  openapi_url: null
+  github_org: woocommerce
+  npm_package: "@woocommerce/woocommerce-rest-api"
+  pypi_package: woocommerce
+  mcp_server_url: null
+
+- slug: cloudflare
+  name: Cloudflare
+  category: infrastructure
+  homepage: https://www.cloudflare.com
+  docs_url: https://developers.cloudflare.com/api
+  openapi_url: https://raw.githubusercontent.com/cloudflare/api-schemas/main/openapi.yaml
+  github_org: cloudflare
+  npm_package: cloudflare
+  pypi_package: cloudflare
+  mcp_server_url: null
+
+- slug: fly-io
+  name: Fly.io
+  category: infrastructure
+  homepage: https://fly.io
+  docs_url: https://fly.io/docs
+  openapi_url: null
+  github_org: superfly
+  npm_package: null
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: railway
+  name: Railway
+  category: infrastructure
+  homepage: https://railway.app
+  docs_url: https://docs.railway.app
+  openapi_url: null
+  github_org: railwayapp
+  npm_package: null
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: render
+  name: Render
+  category: infrastructure
+  homepage: https://render.com
+  docs_url: https://render.com/docs/api
+  openapi_url: null
+  github_org: renderinc
+  npm_package: null
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: vercel
+  name: Vercel
+  category: infrastructure
+  homepage: https://vercel.com
+  docs_url: https://vercel.com/docs/rest-api
+  openapi_url: null
+  github_org: vercel
+  npm_package: "@vercel/sdk"
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: auth0
+  name: Auth0
+  category: identity_auth
+  homepage: https://auth0.com
+  docs_url: https://auth0.com/docs/api
+  openapi_url: null
+  github_org: auth0
+  npm_package: auth0
+  pypi_package: auth0-python
+  mcp_server_url: null
+
+- slug: clerk
+  name: Clerk
+  category: identity_auth
+  homepage: https://clerk.com
+  docs_url: https://clerk.com/docs
+  openapi_url: null
+  github_org: clerk
+  npm_package: "@clerk/clerk-sdk-node"
+  pypi_package: clerk-backend-api
+  mcp_server_url: null
+  api_base_url: https://api.clerk.com
+
+- slug: descope
+  name: Descope
+  category: identity_auth
+  homepage: https://www.descope.com
+  docs_url: https://docs.descope.com
+  openapi_url: null
+  github_org: descope
+  npm_package: "@descope/node-sdk"
+  pypi_package: descope
+  mcp_server_url: null
+
+- slug: okta
+  name: Okta
+  category: identity_auth
+  homepage: https://www.okta.com
+  docs_url: https://developer.okta.com/docs/reference
+  openapi_url: null
+  github_org: okta
+  npm_package: "@okta/okta-sdk-nodejs"
+  pypi_package: okta
+  mcp_server_url: null
+
+- slug: workos
+  name: WorkOS
+  category: identity_auth
+  homepage: https://workos.com
+  docs_url: https://workos.com/docs/reference
+  openapi_url: null
+  github_org: workos
+  npm_package: "@workos-inc/node"
+  pypi_package: workos
+  mcp_server_url: null
+
+- slug: braintree
+  name: Braintree
+  category: payments
+  homepage: https://www.braintreepayments.com
+  docs_url: https://developer.paypal.com/braintree/docs
+  openapi_url: null
+  github_org: braintree
+  npm_package: braintree
+  pypi_package: braintree
+  mcp_server_url: null
+
+- slug: paddle
+  name: Paddle
+  category: payments
+  homepage: https://www.paddle.com
+  docs_url: https://developer.paddle.com/api-reference
+  openapi_url: null
+  github_org: PaddleHQ
+  npm_package: "@paddle/paddle-node-sdk"
+  pypi_package: paddle-python-sdk
+  mcp_server_url: null
+
+- slug: plaid
+  name: Plaid
+  category: payments
+  homepage: https://plaid.com
+  docs_url: https://plaid.com/docs/api
+  openapi_url: https://raw.githubusercontent.com/plaid/plaid-openapi/master/2020-09-14.yml
+  github_org: plaid
+  npm_package: plaid
+  pypi_package: plaid-python
+  mcp_server_url: null
+
+- slug: square
+  name: Square
+  category: payments
+  homepage: https://squareup.com
+  docs_url: https://developer.squareup.com/reference/square
+  openapi_url: null
+  github_org: square
+  npm_package: squareup
+  pypi_package: squareup
+  mcp_server_url: null
+
+- slug: stripe
+  name: Stripe
+  category: payments
+  homepage: https://stripe.com
+  docs_url: https://docs.stripe.com
+  openapi_url: https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json
+  github_org: stripe
+  npm_package: stripe
+  pypi_package: stripe
+  mcp_server_url: null
+  api_base_url: https://api.stripe.com
+
+- slug: cloudflare-r2
+  name: Cloudflare R2
+  category: data_storage
+  homepage: https://www.cloudflare.com/developer-platform/r2
+  docs_url: https://developers.cloudflare.com/r2
+  openapi_url: null
+  github_org: cloudflare
+  npm_package: null
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: neon
+  name: Neon
+  category: data_storage
+  homepage: https://neon.tech
+  docs_url: https://neon.tech/docs
+  openapi_url: null
+  github_org: neondatabase
+  npm_package: "@neondatabase/serverless"
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: planetscale
+  name: PlanetScale
+  category: data_storage
+  homepage: https://planetscale.com
+  docs_url: https://api-docs.planetscale.com
+  openapi_url: null
+  github_org: planetscale
+  npm_package: "@planetscale/database"
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: supabase
+  name: Supabase
+  category: data_storage
+  homepage: https://supabase.com
+  docs_url: https://supabase.com/docs
+  openapi_url: null
+  github_org: supabase
+  npm_package: "@supabase/supabase-js"
+  pypi_package: supabase
+  mcp_server_url: null
+
+- slug: upstash
+  name: Upstash
+  category: data_storage
+  homepage: https://upstash.com
+  docs_url: https://upstash.com/docs
+  openapi_url: null
+  github_org: upstash
+  npm_package: "@upstash/redis"
+  pypi_package: upstash-redis
+  mcp_server_url: null
+
+- slug: postmark
+  name: Postmark
+  category: communications
+  homepage: https://postmarkapp.com
+  docs_url: https://postmarkapp.com/developer
+  openapi_url: null
+  github_org: ActiveCampaign
+  npm_package: postmark
+  pypi_package: postmarker
+  mcp_server_url: null
+
+- slug: resend
+  name: Resend
+  category: communications
+  homepage: https://resend.com
+  docs_url: https://resend.com/docs
+  openapi_url: null
+  github_org: resend
+  npm_package: resend
+  pypi_package: resend
+  mcp_server_url: null
+
+- slug: sendgrid
+  name: SendGrid
+  category: communications
+  homepage: https://sendgrid.com
+  docs_url: https://docs.sendgrid.com
+  openapi_url: null
+  github_org: sendgrid
+  npm_package: "@sendgrid/mail"
+  pypi_package: sendgrid
+  mcp_server_url: null
+
+- slug: twilio
+  name: Twilio
+  category: communications
+  homepage: https://www.twilio.com
+  docs_url: https://www.twilio.com/docs/api
+  openapi_url: null
+  github_org: twilio
+  npm_package: twilio
+  pypi_package: twilio
+  mcp_server_url: null
+  api_base_url: https://api.twilio.com
+
+- slug: vonage
+  name: Vonage
+  category: communications
+  homepage: https://www.vonage.com
+  docs_url: https://developer.vonage.com/api
+  openapi_url: null
+  github_org: Vonage
+  npm_package: "@vonage/server-sdk"
+  pypi_package: vonage
+  mcp_server_url: null
+
+- slug: algolia
+  name: Algolia
+  category: devtools_observability
+  homepage: https://www.algolia.com
+  docs_url: https://www.algolia.com/doc/rest-api/search
+  openapi_url: null
+  github_org: algolia
+  npm_package: algoliasearch
+  pypi_package: algoliasearch
+  mcp_server_url: null
+
+- slug: datadog
+  name: Datadog
+  category: devtools_observability
+  homepage: https://www.datadoghq.com
+  docs_url: https://docs.datadoghq.com/api/latest
+  openapi_url: https://raw.githubusercontent.com/DataDog/datadog-api-client/master/api/v2/openapi.yaml
+  github_org: DataDog
+  npm_package: "@datadog/datadog-api-client"
+  pypi_package: datadog-api-client
+  mcp_server_url: null
+
+- slug: github
+  name: GitHub
+  category: devtools_observability
+  homepage: https://github.com
+  docs_url: https://docs.github.com/en/rest
+  openapi_url: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+  github_org: github
+  npm_package: octokit
+  pypi_package: PyGithub
+  mcp_server_url: null
+
+- slug: launch-darkly
+  name: LaunchDarkly
+  category: devtools_observability
+  homepage: https://launchdarkly.com
+  docs_url: https://apidocs.launchdarkly.com
+  openapi_url: null
+  github_org: launchdarkly
+  npm_package: launchdarkly-node-server-sdk
+  pypi_package: launchdarkly-server-sdk
+  mcp_server_url: null
+
+- slug: linear
+  name: Linear
+  category: devtools_observability
+  homepage: https://linear.app
+  docs_url: https://developers.linear.app/docs
+  openapi_url: null
+  github_org: linear
+  npm_package: "@linear/sdk"
+  pypi_package: null
+  mcp_server_url: null
+
+- slug: posthog
+  name: PostHog
+  category: devtools_observability
+  homepage: https://posthog.com
+  docs_url: https://posthog.com/docs/api
+  openapi_url: null
+  github_org: PostHog
+  npm_package: posthog-node
+  pypi_package: posthog-python
+  mcp_server_url: null
+
+- slug: sentry
+  name: Sentry
+  category: devtools_observability
+  homepage: https://sentry.io
+  docs_url: https://docs.sentry.io/api
+  openapi_url: null
+  github_org: getsentry
+  npm_package: "@sentry/node"
+  pypi_package: sentry-sdk
+  mcp_server_url: null
+
+- slug: snyk
+  name: Snyk
+  category: devtools_observability
+  homepage: https://snyk.io
+  docs_url: https://snyk.docs.apiary.io
+  openapi_url: null
+  github_org: snyk
+  npm_package: snyk
+  pypi_package: null
+  mcp_server_url: null

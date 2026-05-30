@@ -22,7 +22,7 @@ from claude_agent_sdk import (
 # ── PROFILE: Autonomous + Sprint, set per STEP 0.5 / STEP 0.6 ──────────
 PERMISSION_MODE        = "bypassPermissions"   # Autonomous. Use "acceptEdits" for Governed.
 AUTO_LOOP              = True                  # Autonomous. False = one cycle then stop for review.
-MAX_TURNS              = 40                    # Hard cap per orchestrator cycle.
+MAX_TURNS              = 160                   # Hard cap per orchestrator cycle.
 ALLOW_FANOUT           = True                  # True = orchestrator may use `claude -p` fan-out for homogeneous batches. False in Governed.
 FANOUT_CONCURRENCY     = 3                     # Max parallel `claude -p` processes. 3 is the safe ceiling for Max 5x.
 FANOUT_PER_INVOC_TURNS = 30                    # --max-turns for each fan-out worker.
@@ -201,7 +201,7 @@ async def run_cycle(prompt: str) -> bool:
         # 'limit', or HTTP 429. On a hit, write a resume marker to STATUS.md and
         # exit cleanly so the next run picks up where we stopped.
         msg = str(e).lower()
-        if any(s in msg for s in ("rate", "quota", "limit", "429", "exceeded")):
+        if any(s in msg for s in ("rate", "quota", "limit", "429", "exceeded", "turns", "maximum")):
             from datetime import datetime
             marker = (
                 f"\n\n## RESUME MARKER ({datetime.utcnow().isoformat()}Z)\n"
@@ -251,5 +251,8 @@ async def main(goal: str | None):
 
 
 if __name__ == "__main__":
-    goal = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else None
+    if len(sys.argv) > 1 and sys.argv[1] == "--goal-file":
+        goal = open(sys.argv[2]).read().strip()
+    else:
+        goal = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else None
     asyncio.run(main(goal))

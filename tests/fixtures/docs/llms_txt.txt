@@ -1,0 +1,7 @@
+# Test API
+> A test API for agent testing
+
+## Endpoints
+- /v1/items - List items
+- /v1/items/{id} - Get a single item
+- /v1/search - Search items

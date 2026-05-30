@@ -1,0 +1,1 @@
+{"name_for_human": "Test API", "name_for_model": "testapi", "description_for_human": "A test API", "api": {"type": "openapi", "url": "https://testapi.example.com/openapi.json"}}

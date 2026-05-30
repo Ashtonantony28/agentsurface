@@ -1,0 +1,21 @@
+{
+  "openapi": "3.1.0",
+  "info": {"title": "Test", "version": "1.0"},
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://auth.example.com/token",
+            "scopes": {
+              "read:items": "Read items",
+              "write:items": "Write items"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {}
+}

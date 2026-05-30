@@ -1,0 +1,24 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Lint
+        run: ruff check src/ tests/
+      - name: Test (no network)
+        run: pytest -q
+        env:
+          # Reinforce no-network: the conftest.py socket guard is the primary mechanism
+          PYTHONDONTWRITEBYTECODE: "1"

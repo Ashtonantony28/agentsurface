@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test API Documentation</title>
+  <style>body { font-family: sans-serif; }</style>
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/docs">Docs</a>
+    <a href="/api">API</a>
+  </nav>
+  <main>
+    <h1>Test API Documentation</h1>
+    <p>Welcome to the Test API documentation. This API provides a simple interface for managing items in a collection. You can list, create, update, and delete items using standard HTTP methods.</p>
+
+    <h2>Authentication</h2>
+    <p>All requests to the Test API must be authenticated using an API key. Include your API key in the Authorization header as a Bearer token. You can obtain an API key by registering for an account on our developer portal.</p>
+
+    <h2>Endpoints</h2>
+    <h3>GET /v1/items</h3>
+    <p>Returns a paginated list of all items in your collection. You can filter items by category, status, or date range using query parameters. The response includes metadata about the total number of items and pagination cursors.</p>
+
+    <h3>GET /v1/items/{id}</h3>
+    <p>Returns a single item by its unique identifier. If the item does not exist, a 404 response is returned. The item object includes all fields including timestamps and nested related objects.</p>
+
+    <h3>POST /v1/items</h3>
+    <p>Creates a new item. The request body must be a valid JSON object conforming to the item schema. Required fields are name and category. Optional fields include description, tags, and metadata.</p>
+
+    <h3>PUT /v1/items/{id}</h3>
+    <p>Updates an existing item. You can perform a full replacement by providing all fields, or a partial update using the PATCH method with only the fields you want to change.</p>
+
+    <h3>DELETE /v1/items/{id}</h3>
+    <p>Permanently deletes an item. This action cannot be undone. If the item has associated child resources, those will also be deleted in a cascade operation.</p>
+
+    <h2>Error Handling</h2>
+    <p>The API uses standard HTTP status codes to indicate success or failure. Errors are returned as JSON objects with a code, message, and optional details field that provides more context about what went wrong.</p>
+
+    <h2>Rate Limiting</h2>
+    <p>Requests are rate limited to 1000 per minute per API key. If you exceed this limit, you will receive a 429 Too Many Requests response. The response headers include information about your current usage and when the limit resets.</p>
+  </main>
+  <footer>
+    <p>Copyright 2026 Test API Inc. All rights reserved.</p>
+  </footer>
+</body>
+</html>

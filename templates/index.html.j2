@@ -1,0 +1,147 @@
+{% extends "base.html.j2" %}
+
+{% block title %}AgentSurface — Developer API Agent Readiness Leaderboard{% endblock %}
+
+{% block og_title %}AgentSurface — Developer API Agent Readiness Leaderboard{% endblock %}
+{% block og_description %}See how developer APIs score across 6 agent-usability dimensions: discoverability, docs quality, SDK health, error handling, auth design, and agent surface.{% endblock %}
+
+{% block content %}
+<h1>Developer API Agent Readiness Leaderboard</h1>
+<p class="text-muted">
+  Each API is scored across 6 dimensions of agent-usability. Grades reflect how
+  easy it is for an autonomous agent to discover, authenticate, and recover from
+  errors when calling this API.
+</p>
+
+<div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap;">
+  <label for="cat-filter" style="font-size:0.875rem; font-weight:600;">
+    Filter by category:
+  </label>
+  <select id="cat-filter" style="
+    font-family: inherit;
+    font-size: 0.875rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+  ">
+    <option value="">All categories</option>
+    {% set seen = [] %}
+    {% for api in apis %}
+      {% if api.category not in seen %}
+        {% set _ = seen.append(api.category) %}
+        <option value="{{ api.category }}">{{ api.category }}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+
+  <span id="row-count" class="text-muted" style="margin-left:auto;"></span>
+</div>
+
+<div style="overflow-x: auto;">
+<table id="lb-table">
+  <thead style="position: sticky; top: 0; z-index: 10;">
+    <tr>
+      <th data-col="rank"         class="sortable" style="width:3rem;">#</th>
+      <th data-col="name"         class="sortable">API</th>
+      <th data-col="category"     class="sortable">Category</th>
+      <th data-col="score"        class="sortable text-right" style="width:6rem;">Score</th>
+      <th data-col="grade"        class="sortable" style="width:5rem;">Grade</th>
+      <th data-col="last_scanned" class="sortable" style="width:10rem;">Last scanned</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for api in apis %}
+    {% set grade_class = "grade-" ~ api.grade | replace("+", "plus") | replace("-", "minus") %}
+    <tr data-category="{{ api.category }}">
+      <td>{{ loop.index }}</td>
+      <td><a href="/api/{{ api.slug }}.html">{{ api.name }}</a></td>
+      <td>{{ api.category }}</td>
+      <td class="text-right">{{ "%.1f" | format(api.overall_score) }}</td>
+      <td><span class="grade {{ grade_class }}">{{ api.grade }}</span></td>
+      <td class="text-muted">{{ api.last_scanned }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="text-muted" style="text-align:center;">No APIs scored yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+  "use strict";
+  var table  = document.getElementById("lb-table");
+  var tbody  = table.querySelector("tbody");
+  var filter = document.getElementById("cat-filter");
+  var count  = document.getElementById("row-count");
+  var rows   = Array.from(tbody.querySelectorAll("tr[data-category]"));
+  var sortState = { col: "score", asc: false };
+
+  /* ── Category filter ───────────────────────────────────────── */
+  function applyFilter() {
+    var cat = filter.value;
+    var visible = 0;
+    rows.forEach(function (r) {
+      var show = !cat || r.dataset.category === cat;
+      r.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+    count.textContent = visible + " of " + rows.length + " APIs";
+  }
+
+  filter.addEventListener("change", applyFilter);
+  applyFilter();
+
+  /* ── Column sort ───────────────────────────────────────────── */
+  var headers = table.querySelectorAll("th[data-col]");
+
+  function updateSortIndicators() {
+    headers.forEach(function (h) {
+      var base = h.textContent.replace(/ [▲▼]$/, "");
+      if (h.dataset.col === sortState.col) {
+        h.textContent = base + (sortState.asc ? " ▲" : " ▼");
+      } else {
+        h.textContent = base;
+      }
+    });
+  }
+
+  function doSort(col) {
+    if (sortState.col === col) {
+      sortState.asc = !sortState.asc;
+    } else {
+      sortState.col = col;
+      /* score defaults desc, everything else asc */
+      sortState.asc = col !== "score";
+    }
+    var colIndex = -1;
+    headers.forEach(function (h, i) {
+      if (h.dataset.col === col) colIndex = i;
+    });
+    var sorted = rows.slice().sort(function (a, b) {
+      var av = a.cells[colIndex].textContent.trim().replace(/ [▲▼]$/, "");
+      var bv = b.cells[colIndex].textContent.trim().replace(/ [▲▼]$/, "");
+      var an = parseFloat(av), bn = parseFloat(bv);
+      var cmp = !isNaN(an) && !isNaN(bn) ? an - bn : av.localeCompare(bv);
+      return sortState.asc ? cmp : -cmp;
+    });
+    sorted.forEach(function (r) { tbody.appendChild(r); });
+    updateSortIndicators();
+  }
+
+  headers.forEach(function (th) {
+    th.style.cursor = "pointer";
+    th.title = "Click to sort";
+    th.addEventListener("click", function () { doSort(th.dataset.col); });
+  });
+
+  /* Apply default sort: score descending */
+  doSort("score");
+}());
+</script>
+{% endblock %}

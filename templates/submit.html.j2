@@ -1,0 +1,66 @@
+{% extends "base.html.j2" %}
+
+{% block title %}Submit or Contest a Score — AgentSurface{% endblock %}
+
+{% block content %}
+<h1>Submit or Contest a Score</h1>
+<p class="text-muted">
+  Scoring is automated. If you believe a signal is wrong, show us the evidence.
+</p>
+
+<!-- ── Submit your API ────────────────────────────────────────── -->
+<div class="panel mt-2">
+  <h2>Submit your API for scoring</h2>
+  <p>
+    AgentSurface grades developer APIs on how well they support autonomous agents:
+    discoverable specs, machine-readable auth, structured errors, and more.
+    If your API isn't on the leaderboard yet, we'd love to add it.
+  </p>
+  <p>
+    Send us a short note with your API's name, homepage, docs URL, and — if
+    available — an OpenAPI spec URL. We'll run the scanner and publish the
+    result within a few days.
+  </p>
+  <p>
+    <strong>Contact:</strong>
+    <a href="mailto:hello@agentsurface.dev">hello@agentsurface.dev</a>
+  </p>
+  <p class="text-muted" style="font-size:0.875rem;">
+    We score only publicly accessible API surfaces. No credentials needed or
+    accepted on our end.
+  </p>
+</div>
+
+<!-- ── Contest an existing score ─────────────────────────────── -->
+<div class="panel mt-2">
+  <h2>Contest an existing score</h2>
+  <p>
+    Every signal in our framework is deterministic and documented. If you
+    believe a signal was evaluated incorrectly — for example, your
+    <code>/llms.txt</code> is live but was marked as missing — open a GitHub
+    issue with the following:
+  </p>
+  <ul style="padding-left:1.75rem; margin-bottom:0.75rem;">
+    <li>The API slug (e.g. <code>stripe</code>).</li>
+    <li>The dimension and signal name that you believe is wrong.</li>
+    <li>Evidence: a URL, a curl response, or a screenshot showing the correct
+        state of the signal.</li>
+    <li>The date you checked (signals can change; we re-scan periodically).</li>
+  </ul>
+  <p>
+    We will re-run the scanner or manually verify and update the score within
+    5 business days.
+  </p>
+  <p>
+    <strong>Open an issue:</strong>
+    <a href="https://github.com/your-org/agentsurface/issues/new"
+       target="_blank" rel="noopener noreferrer">
+      github.com/your-org/agentsurface/issues/new
+    </a>
+  </p>
+  <p class="text-muted" style="font-size:0.875rem;">
+    Please do not use the issue tracker for general feature requests or
+    questions — email us instead.
+  </p>
+</div>
+{% endblock %}
